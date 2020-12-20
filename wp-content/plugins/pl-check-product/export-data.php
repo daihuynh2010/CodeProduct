@@ -6,7 +6,7 @@ if(isset($_POST['export'])) {
 } 
 function ExportData(){
     $conn = Connection();
-    $sql = "Select * from pl_code_product";
+    $sql = "Select id 'ID', id_product 'Product ID', code 'Product Code', create_date 'Created Date' from pl_code_product";
 
     $file_ending = "xls";
     //header info for browser
@@ -16,6 +16,7 @@ function ExportData(){
     header("Expires: 0");
     $result = $conn->query($sql);
 
+    $conn->close();
     $isPrintHeader = false;
     foreach ($result as $row) {
             if (! $isPrintHeader) {

@@ -20,13 +20,23 @@ function PageCreateCode(){
 					</form>
 				</td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<th></th>
 				<td>
 					<label id ="ProductCode"></label>
 				</td>
-			</tr>
+			</tr> -->
 		</table>
+		<!-- show data to table -->
+		<form id="events-filter" method="get">
+    		<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+			<?php
+			include plugin_dir_path(__FILE__) . 'product-list-page.php';
+		    echo '<div class="wrap"><h2>Danh sách dữ liệu đã tạo</h2>'; 
+		    $table = new TableCodeProduct();
+		    echo '</div>'; 
+		    ?>
+	    </form>
 	</div>
 
 	<script type="text/javascript">
@@ -35,6 +45,7 @@ function PageCreateCode(){
 		// })
 		$(document).ready(function (){
 			CreateTable();
+			$("#ProductID").val(localStorage["inputProductID"]);
 		});
 
 		function CreateTable(){
@@ -57,7 +68,9 @@ function PageCreateCode(){
 		        url: "<?php echo plugins_url("../function.php", __FILE__ ).""  ?>",
 		        data:{ID:productID},
 		        success: function (output) {
-		           $("#ProductCode").html("Product Code: "+output);
+		           //$("#ProductCode").html("Product Code: "+output);
+		           localStorage["inputProductID"] = productID;
+		           window.location.reload();
 		        },
 		        error: function(xhr){
 		        	$("#ProductCode").html("Error: "+xhr.responseText);
@@ -68,3 +81,6 @@ function PageCreateCode(){
 	</script>
 	<?php
 }
+
+
+
