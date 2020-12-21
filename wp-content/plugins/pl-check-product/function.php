@@ -52,7 +52,7 @@ function CreateTable(){
 }
 
 function GenCode($ID){
-	$code = FormatCode(rand(0,99999), 5).FormatCode(rand(0,9999), 5);
+	$code = FormatCode(rand(0,999999), 6).FormatCode(rand(0,999), 3);
 	$conn = Connection();
 	// Check connection
 	if ($conn->connect_error) {
