@@ -10,10 +10,10 @@ if(isset($_GET['CreateTableStatic'])) {
 } 
 
 if(isset($_POST)) { 
-	if (isset($_POST['ID']))
+	if (isset($_POST['Range']))
 	{
-		$ID = $_POST["ID"];
-	    GenCode($ID);
+		$Range = $_POST["Range"];
+	    GenCode($Range);
 	}
 } 
 
@@ -59,8 +59,7 @@ function CreateTable(){
 	   // sql to create table
 		$sql = "CREATE TABLE pl_code_product (
 		id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-		id_product VARCHAR(50) NOT NULL,
-		code VARCHAR(10) NOT NULL,
+		code VARCHAR(50) NOT NULL,
 		count_enter INT,
 		create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 		) ";
@@ -109,40 +108,47 @@ function CreateTableStatic(){
 	$conn->close();
 }
 
-function GenCode($ID){
-	$code = FormatCode(rand(0,999999), 6).FormatCode(rand(0,999), 3);
+function GenCode($Range = 0){
+	// $code = FormatCode(rand(0,999999), 6).FormatCode(rand(0,999), 3);
+	$characterNumber = '0123456789';
+	$characterString = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 	$conn = Connection();
 	// Check connection
 	if ($conn->connect_error) {
 	  die("Connection failed: " . $conn->connect_error);
 	}
-	//check exist
-	$exists =(int) mysqli_fetch_row($conn->query("select 1 from pl_code_product where id_product = ".$ID));
-	$sql = "";
-	if($exists <= 0)
-	{
-		$sql = "insert into pl_code_product ( id_product, code) values ( ".$ID." , ".$code.")";
-	}
-	else
-	{
-		$sql = "update pl_code_product set code = ".$code." where id_product = ".$ID ;
+
+	$i=0;
+	while ($i < $Range) {
+		$code = generateRandomString($characterNumber,6)."-".generateRandomString($characterString,3);
+		//check exist
+		$exists =(int) mysqli_fetch_row($conn->query("select 1 from pl_code_product where code = ".$code));
+		$sql = "";
+		if($exists <= 0)
+		{
+			$sql = "insert into pl_code_product (code) values ( ".$code.")";
+		}
+		
+		if ($conn->query($sql) === TRUE) {
+			$i++;
+		} 
 	}
 
-	if ($conn->query($sql) === TRUE) {
-		echo $code;
-	} else {
-		echo "Error GenCode: " . $conn->error;
-	}
+	// if ($conn->query($sql) === TRUE) {
+	// 	echo $code;
+	// } else {
+	// 	echo "Error GenCode: " . $conn->error;
+	// }
 	$conn->close();
 }
 
-function FormatCode($code, $Length){
-	$CodeFormat = $code;
-	$end = ($Length - strlen((string)$code));
-	for($i=0; $i< $end  ; $i++){
-		$CodeFormat = "0".$CodeFormat;
-	}
-	return $CodeFormat;
+function generateRandomString($characters, $length) {
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
 }
 
 function CheckCodeProduct($Code){
@@ -203,7 +209,7 @@ function SaveSetting($Number){
 	if ($conn->query($sql) === TRUE) {
 		echo "Save Success";
 	} else {
-		echo "Error GenCode: " . $conn->error;
+		echo "Error SaveSetting: " . $conn->error;
 	}
 	$conn->close();
 }

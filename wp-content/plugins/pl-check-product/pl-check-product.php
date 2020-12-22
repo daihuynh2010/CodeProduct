@@ -50,20 +50,24 @@ function GetCodeData() {
     (function () {
 
         $ = jQuery.noConflict();
-        var form_data;
         $('body').on('submit', 'form.wpcf7-form', function( e ){
             e.preventDefault();
 
-            form_data = $('input[name ="ProductCode"]').val();
-            if(form_data != null && form_data != ""){
+            var code = $('input[name ="ProductCode"]').val();
+            var name = $('input[name ="Name"]').val();
+            var phoneNumber = $('input[name ="PhoneNumber"]').val();
+            var email = $('input[name ="Email"]').val();
+            if(code != null && code != "" && name != null && name != ""
+            	 && phoneNumber != null && phoneNumber != "" && email != null && email != ""){
 	            $.ajax({
 	                method : 'POST',
 	                url : '<?php echo plugins_url("function.php", __FILE__ )?>', 
 	                data : {
-	                    Data : form_data,
+	                    Data : code,
 	                },
 	                success : function( response ) {
 	                    console.log( response );
+	                   $('input[name ="ProductCode"]').parent().parent().append("<span class='wpcf7-not-valid-tip'>" + response +"</span>")
 
 	                },
 	                error: function(xhr){

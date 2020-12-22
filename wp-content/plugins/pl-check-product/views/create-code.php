@@ -8,11 +8,11 @@ function PageCreateCode(){
 		<table >
 			<tr style="margin-bottom: 10px">
 				<th>
-					<label> Enter Product ID:</label>
+					<label>Enter number code:</label>
 				</th>
 				<td>
 					<input type="text" id="ProductID" style="margin-right: 10px"/>
-					<button id="genCode" class="button button-primary" style="margin-right: 10px">Creare Code</button>
+					<button id="genCode" class="button button-primary" style="margin-right: 10px">Create Code</button>
 				</td>
 				<td>
 					<form action="<?php echo plugins_url("../export-data.php", __FILE__ )."" ?>" method="post">
@@ -66,7 +66,7 @@ function PageCreateCode(){
 			$.ajax({
 				type: "POST",
 		        url: "<?php echo plugins_url("../function.php", __FILE__ ).""  ?>",
-		        data:{ID:productID},
+		        data:{Range:productID},
 		        success: function (output) {
 		           //$("#ProductCode").html("Product Code: "+output);
 		           localStorage["inputProductID"] = productID;
