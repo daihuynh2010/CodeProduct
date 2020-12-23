@@ -28,7 +28,10 @@ function PageSetting(){
 				type: "GET",
 		        url: "<?php echo plugins_url("../function.php", __FILE__ )."?CreateTableStatic"  ?>",
 		        success: function (output) {
-		           console.log(output);
+		           	console.log(output);
+		           	if(output != ""){
+		           		$("#NumberEnter").val(output);
+		       		}
 		        },
 		        error: function(xhr){
 			        console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);

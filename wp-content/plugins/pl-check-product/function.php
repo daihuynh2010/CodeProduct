@@ -54,6 +54,9 @@ function CreateTable(){
 
 	if($exists !== FALSE)
 	{
+		$sql ="ALTER TABLE pl_code_product
+			DROP COLUMN code_product";
+		$conn->query($sql);
 	   echo("This table exists");
 	}else{
 	   // sql to create table
@@ -63,8 +66,6 @@ function CreateTable(){
 		count_enter INT,
 		create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 		) ";
-
-		//
 
 		if ($conn->query($sql) === TRUE) {
 		  echo "Table CodeProduct created successfully";
@@ -76,6 +77,7 @@ function CreateTable(){
 }
 
 function CreateTableStatic(){
+	global $wpdb;   
 	$conn = Connection();
 	// Check connection
 	if ($conn->connect_error) {
@@ -87,7 +89,13 @@ function CreateTableStatic(){
 
 	if($exists !== FALSE)
 	{
-	   echo("This table exists");
+	   $rows = $wpdb->get_results("select value from pl_static_data where name='NumberOfEnter'");
+	   foreach ($rows as $row) 
+       {
+       		$result = $row->value;
+       }
+       echo $result;
+
 	}else{
 	   // sql to create table
 		$sql = "CREATE TABLE pl_static_data(
@@ -170,7 +178,7 @@ function CheckCodeProduct($Code){
 
 	//check table exist
 	$sql = "select 1 from pl_code_product where code = '".$Code."'";
-	$sqlCount = "select 1 from pl_code_product where count_enter is null or count_enter <= (select value from pl_static_data where name = 'NumberOfEnter')";
+	$sqlCount = "select 1 from pl_code_product where ( count_enter is null or count_enter <= (select value from pl_static_data where name = 'NumberOfEnter') ) and code = '"."'";
 	$result = (int) mysqli_fetch_row($conn->query($sql));
 	
 

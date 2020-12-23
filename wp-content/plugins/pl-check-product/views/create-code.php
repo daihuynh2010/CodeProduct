@@ -21,7 +21,9 @@ function PageCreateCode(){
 				</td>
 			</tr>
 		</table>
-		<p id ="ProductCode"></p>
+		<div class="updated fade">
+			<p> <strong id ="ProductCode"></strong></p>
+		</div>
 		<!-- show data to table -->
 		<form id="events-filter" method="get">
     		<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />

@@ -52,13 +52,14 @@ function GetCodeData() {
         $ = jQuery.noConflict();
         $('body').on('submit', 'form.wpcf7-form', function( e ){
             e.preventDefault();
-
-            var code = $('input[name ="ProductCode"]').val();
-            var name = $('input[name ="Name"]').val();
-            var phoneNumber = $('input[name ="PhoneNumber"]').val();
-            var email = $('input[name ="Email"]').val();
+            var code = $(this).find('input[name ="code"]').val();
+            var name = $(this).find('input[name ="hotenkh"]').val();
+            var phoneNumber = $(this).find('input[name ="sdtkh"]').val();
+            var email = $(this).find('input[name ="emailkh"]').val();
+            var diachi = $(this).find('input[name ="diachikh"]').val();
             if(code != null && code != "" && name != null && name != ""
-            	 && phoneNumber != null && phoneNumber != "" && email != null && email != ""){
+            	 && phoneNumber != null && phoneNumber != "" && email != null && email != ""
+            	 && diachi != null && diachi != ""){
 	            $.ajax({
 	                method : 'POST',
 	                url : '<?php echo plugins_url("function.php", __FILE__ )?>', 
@@ -67,7 +68,7 @@ function GetCodeData() {
 	                },
 	                success : function( response ) {
 	                    console.log( response );
-	                   $('input[name ="ProductCode"]').parent().parent().append("<span class='wpcf7-not-valid-tip'>" + response +"</span>")
+	                   $('input[name ="code"]').parent().parent().append("<span class='wpcf7-not-valid-tip'>" + response +"</span>")
 
 	                },
 	                error: function(xhr){
