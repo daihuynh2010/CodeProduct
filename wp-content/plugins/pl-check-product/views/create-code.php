@@ -20,13 +20,8 @@ function PageCreateCode(){
 					</form>
 				</td>
 			</tr>
-			<!-- <tr>
-				<th></th>
-				<td>
-					<label id ="ProductCode"></label>
-				</td>
-			</tr> -->
 		</table>
+		<p id ="ProductCode"></p>
 		<!-- show data to table -->
 		<form id="events-filter" method="get">
     		<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
@@ -45,7 +40,7 @@ function PageCreateCode(){
 		// })
 		$(document).ready(function (){
 			CreateTable();
-			$("#ProductID").val(localStorage["inputProductID"]);
+			$("#ProductCode").html(localStorage["outputGenCode"]);
 		});
 
 		function CreateTable(){
@@ -63,17 +58,18 @@ function PageCreateCode(){
 
 		$("#genCode").click(function(){
 			var productID = $("#ProductID").val();
+			localStorage["outputGenCode"] = "";
 			$.ajax({
 				type: "POST",
 		        url: "<?php echo plugins_url("../function.php", __FILE__ ).""  ?>",
 		        data:{Range:productID},
 		        success: function (output) {
-		           //$("#ProductCode").html("Product Code: "+output);
-		           localStorage["inputProductID"] = productID;
+		           console.log(output);
+		           localStorage["outputGenCode"] = output;
 		           window.location.reload();
 		        },
 		        error: function(xhr){
-		        	$("#ProductCode").html("Error: "+xhr.responseText);
+		           localStorage["outputGenCode"] = xhr.responseText;
 			        console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
 			    }
 			});

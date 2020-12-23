@@ -13,7 +13,7 @@ if(isset($_POST)) {
 	if (isset($_POST['Range']))
 	{
 		$Range = $_POST["Range"];
-	    GenCode($Range);
+	    echo GenCode($Range);
 	}
 } 
 
@@ -111,35 +111,45 @@ function CreateTableStatic(){
 function GenCode($Range = 0){
 	// $code = FormatCode(rand(0,999999), 6).FormatCode(rand(0,999), 3);
 	$characterNumber = '0123456789';
-	$characterString = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$characterString = 'abcdefghijklmnopqrstuvwxyz';//ABCDEFGHIJKLMNOPQRSTUVWXYZ
 	$conn = Connection();
 	// Check connection
 	if ($conn->connect_error) {
 	  die("Connection failed: " . $conn->connect_error);
 	}
-
+	// echo generateRandomString($characterNumber,6)."-".generateRandomString($characterString,3);
+	$return = "";
 	$i=0;
 	while ($i < $Range) {
 		$code = generateRandomString($characterNumber,6)."-".generateRandomString($characterString,3);
 		//check exist
-		$exists =(int) mysqli_fetch_row($conn->query("select 1 from pl_code_product where code = ".$code));
+		$exists =(int) mysqli_fetch_row($conn->query("select 1 from pl_code_product where code = '".$code."'"));
 		$sql = "";
 		if($exists <= 0)
 		{
-			$sql = "insert into pl_code_product (code) values ( ".$code.")";
+			$sql = "insert into pl_code_product (code) values ( '".$code."')";		
+			if ($conn->query($sql) === TRUE) {
+				$i++;
+			}
+			else{
+				$return = "Error GenCode: " . $conn->error;
+			} 
 		}
-		
-		if ($conn->query($sql) === TRUE) {
-			$i++;
-		} 
+
 	}
 
+	if($return == "")
+	{
+		$return = "Create Success";
+	}
 	// if ($conn->query($sql) === TRUE) {
 	// 	echo $code;
 	// } else {
 	// 	echo "Error GenCode: " . $conn->error;
 	// }
 	$conn->close();
+
+	return $return;
 }
 
 function generateRandomString($characters, $length) {

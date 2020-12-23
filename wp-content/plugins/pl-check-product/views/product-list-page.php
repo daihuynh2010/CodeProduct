@@ -34,7 +34,6 @@ class TableCodeProduct extends WP_List_Table {
 	  $columns = array(
 	  	'cb' => '<input type="checkbox" />', 
 	    'id' => __('ID', 'ux') ,
-	    'id_product'    => __('Product ID', 'ux'),
 	    'code'      => __('Product Code', 'ux'),
 	    'create_date' => __('Created Date', 'ux')
 	  );
@@ -63,7 +62,7 @@ class TableCodeProduct extends WP_List_Table {
 	public function get_records($per_page = 10, $page_number = 1)
 	{
 	    global $wpdb;
-	    $sql = "SELECT id, id_product, code, create_date FROM pl_code_product ";
+	    $sql = "SELECT id, code, create_date FROM pl_code_product ";
 
 	    $sql.= " LIMIT $per_page";
 	    $sql.= ' OFFSET ' . ($page_number - 1) * $per_page;
@@ -105,7 +104,6 @@ class TableCodeProduct extends WP_List_Table {
 	{
 	    $sortable_columns = array(
 	        'id' => array('id',false ) ,
-	        'id_product' => array('id_product',false ) ,
 	        'code' => array('code',false ) ,
 	        'create_date' => array('create_date',false ) 
 	    );
