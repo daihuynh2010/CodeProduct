@@ -2,7 +2,7 @@
 /*
 Plugin Name: Check Product
 Description: Plugin hỗ trợ tạo, kiểm tra mã sản phẩm
-Version: 1.0
+Version: 1.2
 Author: ZhangShang
 */
 
@@ -50,16 +50,45 @@ function GetCodeData() {
     (function () {
 
         $ = jQuery.noConflict();
-        $('body').on('submit', 'form.wpcf7-form', function( e ){
-            e.preventDefault();
-            var code = $(this).find('input[name ="code"]').val();
-            var name = $(this).find('input[name ="hotenkh"]').val();
-            var phoneNumber = $(this).find('input[name ="sdtkh"]').val();
-            var email = $(this).find('input[name ="emailkh"]').val();
-            var diachi = $(this).find('input[name ="diachikh"]').val();
+        // $('body').on('submit', 'form.wpcf7-form', function( e ){
+        //     e.preventDefault();
+        //     var code = $(this).find('input[name ="code"]').val();
+        //     var name = $(this).find('input[name ="hotenkh"]').val();
+        //     var phoneNumber = $(this).find('input[name ="sdtkh"]').val();
+        //     var email = $(this).find('input[name ="emailkh"]').val();
+        //     var diachi = $(this).find('input[name ="diachikh"]').val();
+        //     if(code != null && code != "" && name != null && name != ""
+        //     	 && phoneNumber != null && phoneNumber != "" && email != null && email != ""
+        //     	 && diachi != null && diachi != ""){
+	       //      $.ajax({
+	       //          method : 'POST',
+	       //          url : '<?php echo plugins_url("function.php", __FILE__ )?>', 
+	       //          data : {
+	       //              Data : code,
+	       //          },
+	       //          success : function( response ) {
+	       //              console.log( response );
+	       //             $('input[name ="code"]').parent().parent().append("<span class='wpcf7-not-valid-tip'>" + response +"</span>")
+
+	       //          },
+	       //          error: function(xhr){
+				    //     console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
+				    // }
+	       //      });
+        // 	}
+        // });
+        $(".wpcf7-submit").click(function(){
+        	var code = $(this).parent().parent().find('input[name ="code"]').val();
+            var name = $(this).parent().parent().find('input[name ="hotenkh"]').val();
+            var phoneNumber = $(this).parent().parent().find('input[name ="sdtkh"]').val();
+            var email = $(this).parent().parent().find('input[name ="emailkh"]').val();
+            var diachi = $(this).parent().parent().find('input[name ="diachikh"]').val();
+
+            var codeinput = $(this).parent().parent().find('input[name ="code"]');
             if(code != null && code != "" && name != null && name != ""
-            	 && phoneNumber != null && phoneNumber != "" && email != null && email != ""
-            	 && diachi != null && diachi != ""){
+            	&& phoneNumber != null && phoneNumber != "" && email != null && email != ""
+            	&& diachi != null && diachi != ""){
+	            
 	            $.ajax({
 	                method : 'POST',
 	                url : '<?php echo plugins_url("function.php", __FILE__ )?>', 
@@ -67,19 +96,37 @@ function GetCodeData() {
 	                    Data : code,
 	                },
 	                success : function( response ) {
-	                    console.log( response );
-	                   $('input[name ="code"]').parent().parent().append("<span class='wpcf7-not-valid-tip'>" + response +"</span>")
+	                   console.log( response );
+	                   codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' name='coderesult'>" + response +"</span>")
 
 	                },
 	                error: function(xhr){
 				        console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
 				    }
 	            });
-        	}
-        });
+	    	}
+        })
 
     })();
 </script>
 
 <?php
+
+add_action("wpcf7_before_send_mail", "BeforSendMail");
+function BeforSendMail($WPCF7_ContactForm)
+{
+	// // get the contact form object
+ //    $wpcf7 = WPCF7_ContactForm::get_current();
+ //    // do not send the email
+ //    $wpcf7->skip_mail = true;
+ //    // redirect after the form has been submitted
+ //    $wpcf7->set_properties( array(
+ //        'additional_settings' => "on_sent_ok: \"location.replace('http://example.com//');\"",
+ //    ) );
+
+    $Code = $WPCF7_ContactForm->posted_data['coderesult'];
+    print_r( "123abc" );
+    var_dump($Code);
+}
+
 }

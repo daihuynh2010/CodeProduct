@@ -118,8 +118,8 @@ function CreateTableStatic(){
 
 function GenCode($Range = 0){
 	// $code = FormatCode(rand(0,999999), 6).FormatCode(rand(0,999), 3);
-	$characterNumber = '0123456789';
-	$characterString = 'abcdefghijklmnopqrstuvwxyz';//ABCDEFGHIJKLMNOPQRSTUVWXYZ
+	$characterNumber = '0123456789abcdefghijklmnopqrstuvwxyz';
+	// $characterString = '';//ABCDEFGHIJKLMNOPQRSTUVWXYZ
 	$conn = Connection();
 	// Check connection
 	if ($conn->connect_error) {
@@ -129,7 +129,7 @@ function GenCode($Range = 0){
 	$return = "";
 	$i=0;
 	while ($i < $Range) {
-		$code = generateRandomString($characterNumber,6)."-".generateRandomString($characterString,3);
+		$code = generateRandomString($characterNumber,9);
 		//check exist
 		$exists =(int) mysqli_fetch_row($conn->query("select 1 from pl_code_product where code = '".$code."'"));
 		$sql = "";
@@ -188,7 +188,8 @@ function CheckCodeProduct($Code){
 		if($resultCount > 0){
 			$sqlUpdate = "update pl_code_product set count_enter = COALESCE(count_enter,0) + 1 where code = '".$Code."'" ;
 			if ($conn->query($sqlUpdate) === TRUE) {
-	   			echo("Product exists");
+	   			// echo("Product exists");
+	   			echo "0";
 	   		}
 	   		else
 	   		{
@@ -198,10 +199,12 @@ function CheckCodeProduct($Code){
 	    }
 	    else
 	    {
-	    	echo("Number Of Enter is max");
+	    	// echo("Number Of Enter is max");
+	    	echo "2";
 	    }
 	}else{
-	   echo("Product not exists");
+	   // echo("Product not exists");
+		echo "1";
 	}
 	$conn->close();
 }
