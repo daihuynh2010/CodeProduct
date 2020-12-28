@@ -111,6 +111,10 @@ function GetCodeData() {
 	                    {
         					$(".wpcf7-submit").submit();
 	                    }
+	                    else
+	                    {
+	                    	$("#checkfail").show();
+	                    }
 	                   // else{
 		                  // location.reload(true);
 	               	   // }
