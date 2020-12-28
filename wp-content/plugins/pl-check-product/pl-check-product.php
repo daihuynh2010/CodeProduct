@@ -98,17 +98,23 @@ function GetCodeData() {
 	                    Data : code,
 	                },
 	                success : function( response ) {
-	                   console.log( response );
-	                   codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip'>" + response +"</span> <input hidden type='text' name='coderesult' value='"+response+"'/>");
-	                   if(response == "0")
-	                   {
-        					$(".wpcf7-submit").prop("disabled",false);
-        					$(".wpcf7-submit").submit();
-	                   }
-	                   else{
-		                  location.reload(true);
-	               	   }
+	                    console.log( response );
+	                    if($("#resultCheckCode").html() == null ||$("#resultCheckCode").html() == ""){
+	                   		codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' id='resultCheckCode'>" + response +"</span> <input hidden type='text' name='coderesult' value='"+response + "'/>");
+	               		}
+	               		else
+	               		{
+	               			$("#resultCheckCode").val(response);
+	               		}
 
+	                    if(response == "0")
+	                    {
+        					$(".wpcf7-submit").submit();
+	                    }
+	                   // else{
+		                  // location.reload(true);
+	               	   // }
+        				$(".wpcf7-submit").prop("disabled",false);
 	                },
 	                error: function(xhr){
 				        console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
