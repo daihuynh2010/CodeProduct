@@ -178,7 +178,7 @@ function CheckCodeProduct($Code){
 
 	//check table exist
 	$sql = "select 1 from pl_code_product where code = '".$Code."'";
-	$sqlCount = "select 1 from pl_code_product where ( count_enter is null or count_enter <= (select value from pl_static_data where name = 'NumberOfEnter') ) and code = '"."'";
+	$sqlCount = "select 1 from pl_code_product where ( count_enter is null or count_enter <= (select value from pl_static_data where name = 'NumberOfEnter') ) and code = '".$Code."'";
 	$result = (int) mysqli_fetch_row($conn->query($sql));
 	
 
@@ -194,7 +194,7 @@ function CheckCodeProduct($Code){
 	   		else
 	   		{
 	   			//echo("Error check code product, try again!");
-	   			echo ($code);
+	   			echo ("3");
 	   		}
 	    }
 	    else

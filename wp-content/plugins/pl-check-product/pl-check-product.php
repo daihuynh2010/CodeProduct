@@ -50,7 +50,7 @@ function GetCodeData() {
     (function () {
 
         $ = jQuery.noConflict();
-        // $('body').on('submit', 'form.wpcf7-form', function( e ){
+        $('body').on('submit', 'form.wpcf7-form', function( e ){
         //     e.preventDefault();
         //     var code = $(this).find('input[name ="code"]').val();
         //     var name = $(this).find('input[name ="hotenkh"]').val();
@@ -76,8 +76,9 @@ function GetCodeData() {
 				    // }
 	       //      });
         // 	}
-        // });
-        $(".wpcf7-submit").click(function(){
+        });
+
+        $(".wpcf7-submit").on('click',function(){
         	var code = $(this).parent().parent().find('input[name ="code"]').val();
             var name = $(this).parent().parent().find('input[name ="hotenkh"]').val();
             var phoneNumber = $(this).parent().parent().find('input[name ="sdtkh"]').val();
@@ -85,6 +86,7 @@ function GetCodeData() {
             var diachi = $(this).parent().parent().find('input[name ="diachikh"]').val();
 
             var codeinput = $(this).parent().parent().find('input[name ="code"]');
+        	$(".wpcf7-submit").prop("disabled",true);
             if(code != null && code != "" && name != null && name != ""
             	&& phoneNumber != null && phoneNumber != "" && email != null && email != ""
             	&& diachi != null && diachi != ""){
@@ -97,7 +99,15 @@ function GetCodeData() {
 	                },
 	                success : function( response ) {
 	                   console.log( response );
-	                   codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' name='coderesult'>" + response +"</span>")
+	                   codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip'>" + response +"</span> <input hidden type='text' name='coderesult' value='"+response+"'/>");
+	                   if(response == "0")
+	                   {
+        					$(".wpcf7-submit").prop("disabled",false);
+        					$(".wpcf7-submit").submit();
+	                   }
+	                   else{
+		                  location.reload(true);
+	               	   }
 
 	                },
 	                error: function(xhr){
@@ -105,28 +115,10 @@ function GetCodeData() {
 				    }
 	            });
 	    	}
-        })
-
+        });
     })();
 </script>
 
 <?php
-
-add_action("wpcf7_before_send_mail", "BeforSendMail");
-function BeforSendMail($WPCF7_ContactForm)
-{
-	// // get the contact form object
- //    $wpcf7 = WPCF7_ContactForm::get_current();
- //    // do not send the email
- //    $wpcf7->skip_mail = true;
- //    // redirect after the form has been submitted
- //    $wpcf7->set_properties( array(
- //        'additional_settings' => "on_sent_ok: \"location.replace('http://example.com//');\"",
- //    ) );
-
-    $Code = $WPCF7_ContactForm->posted_data['coderesult'];
-    print_r( "123abc" );
-    var_dump($Code);
-}
 
 }
