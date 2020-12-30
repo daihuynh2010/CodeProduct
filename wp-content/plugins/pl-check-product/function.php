@@ -29,7 +29,8 @@ if(isset($_POST)) {
 	if (isset($_POST['NumberofEnter']))
 	{
 		$Number = $_POST["NumberofEnter"];
-	    SaveSetting($Number);
+		$Length = $_POST["LengthCode"];
+	    SaveSetting($Number, $Length);
 	}
 } 
 
@@ -89,12 +90,17 @@ function CreateTableStatic(){
 
 	if($exists !== FALSE)
 	{
-	   $rows = $wpdb->get_results("select value from pl_static_data where name='NumberOfEnter'");
+	   $rows = $wpdb->get_results("select value, name as 'names' from pl_static_data ");
+	   $number = null;
+	   $length = null;
 	   foreach ($rows as $row) 
        {
-       		$result = $row->value;
+       		if($row->names == "NumberOfEnter")
+       			$number = $row->value;
+       		else if($row->names == "LengthCode")
+       			$length = $row->value;
        }
-       echo $result;
+       echo $number.";#".$length;
 
 	}else{
 	   // sql to create table
@@ -117,9 +123,8 @@ function CreateTableStatic(){
 }
 
 function GenCode($Range = 0){
-	// $code = FormatCode(rand(0,999999), 6).FormatCode(rand(0,999), 3);
+	global $wpdb;   
 	$characterNumber = '0123456789abcdefghijklmnopqrstuvwxyz';
-	// $characterString = '';//ABCDEFGHIJKLMNOPQRSTUVWXYZ
 	$conn = Connection();
 	// Check connection
 	if ($conn->connect_error) {
@@ -127,9 +132,17 @@ function GenCode($Range = 0){
 	}
 	// echo generateRandomString($characterNumber,6)."-".generateRandomString($characterString,3);
 	$return = "";
+
+	$rows = $wpdb->get_results("select value from pl_static_data where name = 'LengthCode' ");
+	$length = "9";
+	foreach ($rows as $row) 
+    {
+       	$length = $row->value;
+    }
+
 	$i=0;
 	while ($i < $Range) {
-		$code = generateRandomString($characterNumber,9);
+		$code = generateRandomString($characterNumber,$length);
 		//check exist
 		$exists =(int) mysqli_fetch_row($conn->query("select 1 from pl_code_product where code = '".$code."'"));
 		$sql = "";
@@ -209,7 +222,7 @@ function CheckCodeProduct($Code){
 	$conn->close();
 }
 
-function SaveSetting($Number){
+function SaveSetting($Number, $Length){
 	$conn = Connection();
 	// Check connection
 	if ($conn->connect_error) {
@@ -227,7 +240,18 @@ function SaveSetting($Number){
 		$sql = "update pl_static_data set value = ".$Number." where name = 'NumberOfEnter'" ;
 	}
 
-	if ($conn->query($sql) === TRUE) {
+	$existsLengthCode =(int) mysqli_fetch_row($conn->query("select 1 from pl_static_data where name = 'LengthCode'"));
+	$sqlLength = "";
+	if($existsLengthCode <= 0)
+	{
+		$sqlLength = "insert into pl_static_data ( name, value) values ( 'LengthCode' , '$Length')";
+	}
+	else
+	{
+		$sqlLength = "update pl_static_data set value = '$Length' where name = 'LengthCode'" ;
+	}
+
+	if ($conn->query($sql) === TRUE && $conn->query($sqlLength) == TRUE) {
 		echo "Save Success";
 	} else {
 		echo "Error SaveSetting: " . $conn->error;
