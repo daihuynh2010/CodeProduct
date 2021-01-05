@@ -3,7 +3,7 @@
 Plugin Name: Check Product
 Description: Plugin hỗ trợ tạo, kiểm tra mã sản phẩm
 Version: 1.2
-Author: ZhangShang
+Author: Quốc Đại
 */
 
 include plugin_dir_path(__FILE__) . 'views/create-code.php';
@@ -93,28 +93,28 @@ function GetCodeData() {
 	                    		$("body").removeClass("pl-check-product-loading");
 		                    	$("#resultCheckCode").show();
 			                    if( $("#resultCheckCode").html() == null || $("#resultCheckCode").html() == ""){
-			                   		codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' id='resultCheckCode'>Mã sản phẩm không đúng</span> <input hidden type='text' name='coderesult' value='"+response + "'/> <a href='#checkfail' style ='display:none'>click</a>");
+			                   		codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' id='resultCheckCode'>Mã sản phẩm không đúng</span> <input hidden type='text' name='coderesult' value='"+response + "'/>");
 			               		}	
 			               		else
 			               		{
 			               			$("#resultCheckCode").html("Mã sản phẩm không đúng");
 			               		}
 
-			                   	$('#checkfail').trigger('click');
+			                   	 window.location.href = $('a[href^="#checkfail"]').attr('href');
 			                   	break;
 			                case "2":
 		                		
 	                    		$("body").removeClass("pl-check-product-loading");
 		                    	$("#resultCheckCode").show();
 			                    if( $("#resultCheckCode").html() == null || $("#resultCheckCode").html() == ""){
-			                   		codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' id='resultCheckCode'>Sản phẩm đã được xác minh</span> <input hidden type='text' name='coderesult' value='"+response + "'/> <a href='#checkfail' style ='display:none'>click</a>");
+			                   		codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' id='resultCheckCode'>Sản phẩm đã được xác minh</span> <input hidden type='text' name='coderesult' value='"+response + "'/>");
 			               		}	
 			               		else
 			               		{
 			               			$("#resultCheckCode").html("Sản phẩm đã được xác minh");
 			               		}
 
-			                   	$('#checkfail').trigger('click');
+			                   	 window.location.href = $('a[href^="#checkfail"]').attr('href');
 			                   	break;
 			                case "3":
 
