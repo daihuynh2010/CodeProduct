@@ -2,7 +2,7 @@
 /*
 Plugin Name: Check Product
 Description: Plugin hỗ trợ tạo, kiểm tra mã sản phẩm
-Version: 1.2
+Version: 1.2.2
 Author: Quốc Đại
 */
 
@@ -99,8 +99,8 @@ function GetCodeData() {
 			               		{
 			               			$("#resultCheckCode").html("Mã sản phẩm không đúng");
 			               		}
-
-			                   	 window.location.href = $('a[href^="#checkfail"]').attr('href');
+			               		$('a[href^="#checkfail"]').trigger('click');
+			                   	window.location.href = $('a[href^="#checkfail"]').attr('href');
 			                   	break;
 			                case "2":
 		                		
@@ -113,8 +113,8 @@ function GetCodeData() {
 			               		{
 			               			$("#resultCheckCode").html("Sản phẩm đã được xác minh");
 			               		}
-
-			                   	 window.location.href = $('a[href^="#checkfail"]').attr('href');
+			               		$('a[href^="#checkfail"]').trigger('click');
+			                   	window.location.href = $('a[href^="#checkfail"]').attr('href');
 			                   	break;
 			                case "3":
 
