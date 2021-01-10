@@ -100,7 +100,6 @@ function GetCodeData() {
 			               			$("#resultCheckCode").html("Mã sản phẩm không đúng");
 			               		}
 			               		$('a[href^="#checkfail"]').trigger('click');
-			                   	// window.location.href = $('a[href^="#checkfail"]').attr('href');
 			                   	break;
 			                case "2":
 		                		
@@ -113,8 +112,7 @@ function GetCodeData() {
 			               		{
 			               			$("#resultCheckCode").html("Sản phẩm đã được xác minh");
 			               		}
-			               		$('a[href^="#checkfail"]').trigger('click');
-			                   	// window.location.href = $('a[href^="#checkfail"]').attr('href');
+			               		$('a[href^="#existcode"]').trigger('click');
 			                   	break;
 			                case "3":
 
