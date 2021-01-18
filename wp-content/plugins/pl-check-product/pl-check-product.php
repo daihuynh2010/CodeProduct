@@ -61,7 +61,8 @@ function GetCodeData() {
 
         $ = jQuery.noConflict();
 
-        $(".wpcf7-submit").on('click',function(){
+        // $("#wpcf7-f10-p1-o1 .wpcf7-submit").on('click',function(){
+        $("#wpcf7-f4993-p5099-o1 .wpcf7-submit").on('click',function(){
         	$("body").addClass("pl-check-product-loading");
         	var code = $(this).parent().parent().find('input[name ="code"]').val();
             var name = $(this).parent().parent().find('input[name ="hotenkh"]').val();
@@ -70,82 +71,122 @@ function GetCodeData() {
             var diachi = $(this).parent().parent().find('input[name ="diachikh"]').val();
 
             var codeinput = $(this).parent().parent().find('input[name ="code"]');
-        	$(".wpcf7-submit").prop("disabled",true);
+        	// $("#wpcf7-f10-p1-o1 .wpcf7-submit").prop("disabled",true);
+        	$("#wpcf7-f4993-p5099-o1 .wpcf7-submit").prop("disabled",true);
 		    $(".wpcf7-not-valid-tip").hide();
+		    var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
             if(code != null && code != "" && name != null && name != ""
             	&& phoneNumber != null && phoneNumber != "" && diachi != null && diachi != ""){
 	            
-	            $.ajax({
-	                method : 'POST',
-	                url : '<?php echo plugins_url("function.php", __FILE__ )?>', 
-	                data : {
-	                    Data : code,
-	                },
-	                success : function( response ) {
-	                    console.log( response );
-	                    switch(response) 
-	                    {
-	                    	case "0":
-        						$(".wpcf7-submit").submit();
-        						break;
+	            if(!$.isNumeric(phoneNumber) || !regex.test(email)){
+			    	var delay = 600; 
+					setTimeout(function() {
+						if( $("#resultCheckCode").html() == null || $("#resultCheckCode").html() == ""){
+						     codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' id='resultCheckCode'>Vui lòng nhập đúng các thông tin</span> <input hidden type='text' name='coderesult' value=''/>");
+						}	
+						else
+						{
+						    $("#resultCheckCode").html("Vui lòng nhập đúng các thông tin");
+						}
+						$("#resultCheckCode").show();
 
-	                    	case "1":
-	                    		$("body").removeClass("pl-check-product-loading");
-		                    	$("#resultCheckCode").show();
-			                    if( $("#resultCheckCode").html() == null || $("#resultCheckCode").html() == ""){
-			                   		codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' id='resultCheckCode'>Mã sản phẩm không đúng</span> <input hidden type='text' name='coderesult' value='"+response + "'/>");
-			               		}	
-			               		else
-			               		{
-			               			$("#resultCheckCode").html("Mã sản phẩm không đúng");
-			               		}
-			               		$('a[href^="#checkfail"]').trigger('click');
-			                   	break;
-			                case "2":
-		                		
-	                    		$("body").removeClass("pl-check-product-loading");
-		                    	$("#resultCheckCode").show();
-			                    if( $("#resultCheckCode").html() == null || $("#resultCheckCode").html() == ""){
-			                   		codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' id='resultCheckCode'>Sản phẩm đã được xác minh</span> <input hidden type='text' name='coderesult' value='"+response + "'/>");
-			               		}	
-			               		else
-			               		{
-			               			$("#resultCheckCode").html("Sản phẩm đã được xác minh");
-			               		}
-			               		$('a[href^="#existcode"]').trigger('click');
-			                   	break;
-			                case "3":
+					    $("body").removeClass("pl-check-product-loading");
+					    // $("#wpcf7-f10-p1-o1 .wpcf7-submit").prop("disabled",false);
+					    $("#wpcf7-f4993-p5099-o1 .wpcf7-submit").prop("disabled",false);
+				    		
+					}, delay);
+				}
+				else{
 
-	                    		$("body").removeClass("pl-check-product-loading");
-		                    	$("#resultCheckCode").show();
-			                    if( $("#resultCheckCode").html() == null || $("#resultCheckCode").html() == ""){
-			                   		codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' id='resultCheckCode'>Xảy ra lỗi trong quá trình kiểm tra, vui lòng thử lại</span> <input hidden type='text' name='coderesult' value='"+response + "'/>");
-			               		}	
-			               		else
-			               		{
-			               			$("#resultCheckCode").html("Xảy ra lỗi trong quá trình kiểm tra, vui lòng thử lại");
-			               		}
-			                	break;
-	                    }
-        				$(".wpcf7-submit").prop("disabled",false);
-	                },
-	                error: function(xhr){
-	                    $("body").removeClass("pl-check-product-loading");
-				        console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
-				    }
-	            });
+		            $.ajax({
+		                method : 'POST',
+		                url : '<?php echo plugins_url("function.php", __FILE__ )?>', 
+		                data : {
+		                    Data : code,
+		                },
+		                success : function( response ) {
+		                    switch(response) 
+		                    {
+		                    	case "0":
+	        						// $("#wpcf7-f10-p1-o1 .wpcf7-submit").submit();
+	        						$("#wpcf7-f4993-p5099-o1 .wpcf7-submit").submit();
+	        						break;
+
+		                    	case "1":
+				                    $("body").removeClass("pl-check-product-loading");
+				                 //    if( $("#resultCheckCode").html() == null || $("#resultCheckCode").html() == ""){
+				                 //   		codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' id='resultCheckCode'>Mã sản phẩm không đúng</span> <input hidden type='text' name='coderesult' value='"+response + "'/>");
+				               		// }	
+				               		// else
+				               		// {
+				               		// 	$("#resultCheckCode").html("Mã sản phẩm không đúng");
+				               		// }
+					                // $("#resultCheckCode").show();
+				               		$('a[href^="#checkfail"]').trigger('click');
+				                   	break;
+				                case "2":
+			                		
+				                    $("body").removeClass("pl-check-product-loading");
+				                 //    if( $("#resultCheckCode").html() == null || $("#resultCheckCode").html() == ""){
+				                 //   		codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' id='resultCheckCode'>Sản phẩm đã được xác minh</span> <input hidden type='text' name='coderesult' value='"+response + "'/>");
+				               		// }	
+				               		// else
+				               		// {
+				               		// 	$("#resultCheckCode").html("Sản phẩm đã được xác minh");
+				               		// }
+					                // $("#resultCheckCode").show();
+				               		$('a[href^="#existcode"]').trigger('click');
+				                   	break;
+				                case "3":
+
+				                    $("body").removeClass("pl-check-product-loading");
+				                    if( $("#resultCheckCode").html() == null || $("#resultCheckCode").html() == ""){
+				                   		codeinput.parent().parent().append("<span class='wpcf7-not-valid-tip' id='resultCheckCode'>Xảy ra lỗi trong quá trình kiểm tra, vui lòng thử lại</span> <input hidden type='text' name='coderesult' value='"+response + "'/>");
+				               		}	
+				               		else
+				               		{
+				               			$("#resultCheckCode").html("Xảy ra lỗi trong quá trình kiểm tra, vui lòng thử lại");
+				               		}
+					                $("#resultCheckCode").show();
+				                	break;
+		                    }
+	        				// $("#wpcf7-f10-p1-o1 .wpcf7-submit").prop("disabled",false);
+	        				$("#wpcf7-f4993-p5099-o1 .wpcf7-submit").prop("disabled",false);
+		                },
+		                error: function(xhr){
+		                    $("body").removeClass("pl-check-product-loading");
+	        				// $("#wpcf7-f10-p1-o1 .wpcf7-submit").prop("disabled",false);
+	        				$("#wpcf7-f4993-p5099-o1 .wpcf7-submit").prop("disabled",false);
+					        console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
+					    }
+		            });
+		        }
 	    	}
 	    	else{
-	            $("body").removeClass("pl-check-product-loading");
-	    		$(".wpcf7-submit").submit();
-	    		$(".wpcf7-submit").prop("disabled",false);
+				$("body").removeClass("pl-check-product-loading");
+				// $("#wpcf7-f10-p1-o1 .wpcf7-submit").prop("disabled",false);
+				$("#wpcf7-f4993-p5099-o1 .wpcf7-submit").prop("disabled",false);
+	    		
 	    	}
         });
 
         document.addEventListener( 'wpcf7mailsent', function( event ) {
 	        $("body").removeClass("pl-check-product-loading");
+			// $("#wpcf7-f10-p1-o1 .wpcf7-submit").prop("disabled",false);
+			$("#wpcf7-f4993-p5099-o1 .wpcf7-submit").prop("disabled",false);
 		}, false );
 
+		document.addEventListener( 'wpcf7invalid', function( event ) {
+	        $("body").removeClass("pl-check-product-loading");
+			// $("#wpcf7-f10-p1-o1 .wpcf7-submit").prop("disabled",false);
+			$("#wpcf7-f4993-p5099-o1 .wpcf7-submit").prop("disabled",false);
+		}, false );
+
+		document.addEventListener( 'wpcf7mailfailed', function( event ) {
+	        $("body").removeClass("pl-check-product-loading");
+			// $("#wpcf7-f10-p1-o1 .wpcf7-submit").prop("disabled",false);
+			$("#wpcf7-f4993-p5099-o1 .wpcf7-submit").prop("disabled",false);
+		}, false );
 
 	})();
 </script>
